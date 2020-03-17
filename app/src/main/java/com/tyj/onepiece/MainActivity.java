@@ -2,26 +2,55 @@ package com.tyj.onepiece;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.chengxin.talk.cxsdk.callback.RegisterAppCallBack;
 import com.chengxin.talk.cxsdk.modelmsg.CXWebPageMessage;
 import com.chengxin.talk.cxsdk.openapi.CXAPIFactory;
 import com.chengxin.talk.cxsdk.openapi.ICXOpenAPI;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    //九宫格图片
+    private int[] mThumbIds = {
+            R.drawable.share_ico, R.drawable.my_home
+    };
+    //九宫格文字
+    private String text[]={"房间分享","我的房间"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            this.chenXingShareTest();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
         setContentView(R.layout.activity_main);
+        GridView gridView=(GridView)findViewById(R.id.gridview);
+        gridView.setAdapter(new BoxImageAdapter(this,this.text,this.mThumbIds));
+        //单击GridView元素的响应
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //弹出单击的GridView元素的位置
+                Toast.makeText(MainActivity.this,mThumbIds[position], Toast.LENGTH_SHORT).show();
+                try {
+                    MainActivity.this.chenXingShareTest();
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void chenXingShareTest() throws PackageManager.NameNotFoundException {
@@ -34,18 +63,16 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess() {
                 Log.e("ok", "xxxxx");
                 CXWebPageMessage mCxWebPageMessage = new CXWebPageMessage();
-                mCxWebPageMessage._cx_title = "a";
-                mCxWebPageMessage._cx_content = "b";
+                mCxWebPageMessage._cx_title = "滚筒子";
+                mCxWebPageMessage._cx_content = "滚筒子房间10，AA房，10局";
                 mCxWebPageMessage._cx_page_Image = "https://www.toplaygame.cn/share_icon.png";
                 mCxWebPageMessage._cx_page_Url = "https://www.toplaygame.cn/web-mobile/";
                 mIcxOpenAPI.doReq(mCxWebPageMessage);
             }
-
             @Override
             public void onFail(int mCode, Object mMsg) {
                 Log.e("xxxx", "xxxxx");
             }
         });
-        //Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.ee);
     }
 }
