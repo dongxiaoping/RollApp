@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/register_username"
+        android:id="@+id/room_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -23,15 +23,16 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/room_num_edit_text"
             android:hint="请输入需要分享的房间号"
             android:textSize="14sp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/register_finish"
+        android:id="@+id/share_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/register_username"
+        android:layout_below="@id/room_num"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="点击分享" />
