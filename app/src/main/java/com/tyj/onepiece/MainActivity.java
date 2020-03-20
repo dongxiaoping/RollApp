@@ -3,6 +3,7 @@ package com.tyj.onepiece;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,10 +15,10 @@ import com.tyj.onepiece.componet.BoxImageAdapter;
 public class MainActivity extends AppCompatActivity {
     //九宫格图片
     private int[] mThumbIds = {
-            R.drawable.share_ico, R.drawable.my_home, R.drawable.my_home
+            R.drawable.share_ico, R.drawable.create_room_icon, R.drawable.my_home
     };
     //九宫格文字
-    private String text[] = {"房间分享", "我的房间", "创建房间"};
+    private String text[] = {"进入游戏", "创建房间", "运行中房间"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +35,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 switch (position) {
                     case 0:
-                        intent.setClass(MainActivity.this, ShareActivity.class);
-                        MainActivity.this.startActivity(intent);
+                        intent.setData(Uri.parse("https://www.toplaygame.cn/web-mobile/test/main"));//Url 就是你要打开的网址
+                        intent.setAction(Intent.ACTION_VIEW);
+                        MainActivity.this.startActivity(intent); //启动浏览器
+                        Toast.makeText(MainActivity.this, "0", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(MainActivity.this, "2", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
                         intent.setClass(MainActivity.this, CreatRoomActivity.class);
                         MainActivity.this.startActivity(intent);
+                        break;
+                    case 2:
+                        Toast.makeText(MainActivity.this, "2", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                 }
