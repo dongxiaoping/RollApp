@@ -9,11 +9,17 @@ import com.chengxin.talk.cxsdk.openapi.ICXOpenAPI;
 
 public class ChenXingShare {
     private ICXOpenAPI mIcxOpenAPI;
-    public void actionShareButtonClick(String roomNum) {
+    public void actionShareButtonClick(String roomNum,String renShu, String juShu, String costLimit,int roomPay) {
         Log.e("ok", "xxxxx");
         CXWebPageMessage mCxWebPageMessage = new CXWebPageMessage();
         mCxWebPageMessage._cx_title = "滚筒子";
-        mCxWebPageMessage._cx_content = "邀请您一起玩，房间【" + roomNum+"】，抢庄4，局8人，最高下注100";
+        String roomPayString = "";
+        if(roomPay == 2){
+            roomPayString = "代开";
+        }else{
+            roomPayString = "AA";
+        }
+        mCxWebPageMessage._cx_content = "邀请您一起玩，"+roomPayString+"房间【" + roomNum+"】，抢庄，人数"+renShu+"，局数"+juShu+"，最高下注"+costLimit;
         mCxWebPageMessage._cx_page_Image = "https://www.toplaygame.cn/share_icon.png";
         mCxWebPageMessage._cx_page_Url = this.getPlayUrlByRoomNum(roomNum);
         mIcxOpenAPI.doReq(mCxWebPageMessage);

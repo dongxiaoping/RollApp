@@ -46,10 +46,10 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void actionCreatButtonClick() {
-        int memberCount = this.getMemberCount();
-        int raceCount = this.getRaceCount();
-        int diamondType = this.getDiamondType();
-        int costLimit = this.getCostLimit();
+        final int memberCount = this.getMemberCount();
+        final int raceCount = this.getRaceCount();
+        final int diamondType = this.getDiamondType();
+        final int costLimit = this.getCostLimit();
         System.out.println(String.valueOf(memberCount));
         System.out.println(String.valueOf(raceCount));
         System.out.println(String.valueOf(diamondType));
@@ -57,11 +57,11 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
         new Thread(new Runnable() {
             @Override
             public void run() {
-                this.requestCreateRoom();
+                this.requestCreateRoom(String.valueOf(memberCount),String.valueOf(raceCount),String.valueOf(costLimit),String.valueOf(diamondType));
             }
 
-            private void requestCreateRoom() {
-                String uriAPI = "https://www.toplaygame.cn/phpserver/public/index.php/race/room/create_room?creatUserId=2969&memberLimit=6&playCount=10&roomPay=2&costLimit=10";
+            private void requestCreateRoom(String memberCount, String raceCount, String costLimit, String roomPay) {
+                String uriAPI = "https://www.toplaygame.cn/phpserver/public/index.php/race/room/create_room?creatUserId=2969&memberLimit="+memberCount+"&playCount="+raceCount+"&roomPay="+roomPay+"&costLimit="+costLimit;
                 HttpGet httpRequest = new HttpGet(uriAPI);
                 HttpClient httpClient = new DefaultHttpClient();
                 try {
@@ -92,15 +92,23 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             }
             System.out.println(result);
             JSONObject demoJson = new JSONObject(result);
-            String flag = demoJson.getString("status");
-            if(flag == "1"){
+            Integer flag = Integer.parseInt(demoJson.getString("status"));
+            if(flag == 1){
                 String roomInfo = demoJson.getString("data");
                 JSONObject roomInfoOb = new JSONObject(roomInfo);
                 String roomId = roomInfoOb.getString("id");
+                String memberLimit = roomInfoOb.getString("memberLimit");
+                String playCount = roomInfoOb.getString("playCount");
+                String roomPay = roomInfoOb.getString("playCount");
+                String costLimit = roomInfoOb.getString("costLimit");
                 System.out.println(roomId);
               //  Toast.makeText(this, "房间创建成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.putExtra("roomId", roomId);
+                intent.putExtra("memberLimit", memberLimit);
+                intent.putExtra("playCount", playCount);
+                intent.putExtra("costLimit", costLimit);
+                intent.putExtra("roomPay", roomPay);
                 intent.setClass(this, RoomSuccessActivity.class);
                 this.startActivity(intent);
             }else{
@@ -186,7 +194,7 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             RadioButton rb = (RadioButton) RadioGroupRadioMemberCount.getChildAt(i);
             if (rb.isChecked()) {
                 if (i == 0) {
-                    val = 0;
+                    val = 2;
                 } else {
                     val = 1;
                 }

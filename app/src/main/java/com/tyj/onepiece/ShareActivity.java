@@ -51,7 +51,7 @@ public class ShareActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.share_button:
                 String roomNum = this.roomNumEditText.getText().toString();
-                chenXingShare.actionShareButtonClick(roomNum);
+                chenXingShare.actionShareButtonClick(roomNum,"6", "12", "100",2);
                 break;
         }
     }

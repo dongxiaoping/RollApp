@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 public class RoomSuccessActivity extends AppCompatActivity implements View.OnClickListener{
     String roomId;
+    String memberLimit; //人数
+    String playCount; //局数
+    String costLimit; //下注上限
+    int roomPay; //2 代开房  1 AA房
     private ChenXingShare chenXingShare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +35,24 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
         this.roomId = intent.getStringExtra("roomId");
+        this.memberLimit = intent.getStringExtra("memberLimit");
+        this.playCount = intent.getStringExtra("playCount");
+        this.costLimit = intent.getStringExtra("costLimit");
+        String roomPay = intent.getStringExtra("roomPay");
+        this.roomPay = Integer.parseInt(roomPay);
         TextView RefreshTextObject = (TextView) findViewById(R.id.room_num_text);
         RefreshTextObject.setText(roomId+"号房间创建成功!");
+        findViewById(R.id.content_share_button).setOnClickListener(this);
+
         chenXingShare = new ChenXingShare();
-        chenXingShare.initChenXingShare(this);
+        chenXingShare.initChenXingShare(RoomSuccessActivity.this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.content_share_button:
-                chenXingShare.actionShareButtonClick(this.roomId );
+                chenXingShare.actionShareButtonClick(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay );
                 break;
         }
     }
