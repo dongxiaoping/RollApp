@@ -1,4 +1,4 @@
-package com.tyj.onepiece;
+package com.tyj.onepiece.componet;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
- public class BoxImageAdapter extends BaseAdapter {
+import com.tyj.onepiece.R;
+
+public class BoxImageAdapter extends BaseAdapter {
     private Context mContext;
     private String textList[]=null;
     private int imgIdList[]=null;
