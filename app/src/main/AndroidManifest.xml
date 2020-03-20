@@ -17,9 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".OningGameList"
+            android:label="@string/title_activity_oning_game_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".RoomSuccessActivity"
             android:label="@string/title_activity_room_success"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreatRoomActivity"
             android:label="@string/title_activity_creat_room"
@@ -34,7 +38,10 @@
         <activity
             android:name=".ShareActivity"
             android:label="@string/share_page_name" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

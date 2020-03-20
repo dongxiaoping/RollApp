@@ -3,4 +3,5 @@
     <string name="share_page_name">分享页面</string>
     <string name="title_activity_creat_room">CreatRoomActivity</string>
     <string name="title_activity_room_success">RoomSuccessActivity</string>
+    <string name="title_activity_oning_game_list">OningGameList</string>
 </resources>

@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(intent);
                         break;
                     case 2:
-                        Toast.makeText(MainActivity.this, "2", Toast.LENGTH_SHORT).show();
+                        intent.setClass(MainActivity.this, OningGameList.class);
+                        MainActivity.this.startActivity(intent);
                         break;
                     default:
                 }
