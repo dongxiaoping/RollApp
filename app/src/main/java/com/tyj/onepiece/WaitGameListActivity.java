@@ -1,5 +1,6 @@
 package com.tyj.onepiece;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -117,7 +118,11 @@ public class WaitGameListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
                 try {
                     String roomId =   String.valueOf((Integer) WaitGameListActivity.this.noBeginRoomList.getJSONObject(p3).get("id"));
-                    Toast.makeText(WaitGameListActivity.this, roomId, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("roomId", roomId);
+                    intent.setClass(WaitGameListActivity.this, WaitGameDetailActivity.class);
+                    WaitGameListActivity.this.startActivity(intent);
+                   // Toast.makeText(WaitGameListActivity.this, roomId, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
