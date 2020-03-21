@@ -20,7 +20,8 @@ import com.chengxin.talk.cxsdk.openapi.ICXOpenAPI;
 import com.tyj.onepiece.componet.ChenXingShare;
 
 import static com.tyj.onepiece.R.id.room_num_edit_text;
-
+/*分享页面  当前弃用
+* */
 public class ShareActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText roomNumEditText;
 

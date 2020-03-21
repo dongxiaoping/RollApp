@@ -10,6 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+/*
+* 创建成功提示页面，当前该页面有分享功能
+* */
 public class RoomSuccessActivity extends AppCompatActivity implements View.OnClickListener{
     String roomId;
     String memberLimit; //人数

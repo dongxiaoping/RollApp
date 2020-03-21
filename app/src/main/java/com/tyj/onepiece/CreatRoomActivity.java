@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
-
+/*
+* 创建房间页面
+* */
 public class CreatRoomActivity extends AppCompatActivity implements View.OnClickListener {
     RadioGroup radioGroup;
 

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(intent);
                         break;
                     case 2:
-                        intent.setClass(MainActivity.this, OningGameList.class);
+                        intent.setClass(MainActivity.this, WaitGameListActivity.class);
                         MainActivity.this.startActivity(intent);
                         break;
                     default:
