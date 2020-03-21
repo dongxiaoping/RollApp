@@ -23,6 +23,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
+            android:id="@+id/wait_game_detail_start_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
