@@ -5,11 +5,12 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import com.tyj.onepiece.componet.Conf;
+import com.tyj.onepiece.componet.InterfaceUrl;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,7 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
+
 /*
 * 创建房间页面
 * */
@@ -63,7 +64,8 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             }
 
             private void requestCreateRoom(String memberCount, String raceCount, String costLimit, String roomPay) {
-                String uriAPI = "https://www.toplaygame.cn/phpserver/public/index.php/race/room/create_room?creatUserId=2969&memberLimit="+memberCount+"&playCount="+raceCount+"&roomPay="+roomPay+"&costLimit="+costLimit;
+                String uriAPI = Conf.serviceAddress+ InterfaceUrl.createRoom+
+                        "?creatUserId=2969&memberLimit="+memberCount+"&playCount="+raceCount+"&roomPay="+roomPay+"&costLimit="+costLimit;
                 HttpGet httpRequest = new HttpGet(uriAPI);
                 HttpClient httpClient = new DefaultHttpClient();
                 try {
@@ -121,31 +123,6 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             e.printStackTrace();
         }
 
-    }
-
-    public void requestCreateRoom() {
-        /*URL可以随意改*/
-        String uriAPI = "https://www.toplaygame.cn/phpserver/public/index.php/race/room/create_room?creatUserId=2969&memberLimit=6&playCount=10&roomPay=2&costLimit=10";
-        /*建立HTTP Get对象*/
-        HttpGet httpRequest = new HttpGet(uriAPI);
-        try {
-            /*发送请求并等待响应*/
-            HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
-            /*若状态码为200 ok*/
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                /*读*/
-                String strResult = EntityUtils.toString(httpResponse.getEntity());
-                /*去没有用的字符*/
-            } else {
-
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     //房间人数设置

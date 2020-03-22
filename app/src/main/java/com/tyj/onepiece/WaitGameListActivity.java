@@ -18,7 +18,9 @@ import java.util.HashMap;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
-import android.widget.Toast;
+
+import com.tyj.onepiece.componet.Conf;
+import com.tyj.onepiece.componet.InterfaceUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +50,8 @@ public class WaitGameListActivity extends AppCompatActivity {
         OkHttpClient okhttpClient = new OkHttpClient();
         //构建Request
         Request.Builder builder = new Request.Builder();
-        Request request = builder.get().url("https://www.toplaygame.cn/phpserver/public/index.php/race/room/get_not_begin_room_list_by_user_id?userId=2969").build();
+        String url = Conf.serviceAddress+ InterfaceUrl.get_not_begin_room_list_by_user_id+"?userId=2969";
+        Request request = builder.get().url(url).build();
         //将Request封装为Call
         Call call = okhttpClient.newCall(request);
         //执行Call

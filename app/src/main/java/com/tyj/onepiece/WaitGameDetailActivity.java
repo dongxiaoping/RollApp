@@ -7,7 +7,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.tyj.onepiece.componet.ChenXingShare;
+import com.tyj.onepiece.componet.Conf;
 import com.tyj.onepiece.componet.JWebSocketClient;
+import com.tyj.onepiece.componet.InterfaceUrl;
 import com.tyj.onepiece.model.Room;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +21,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -112,7 +113,8 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
     public void doGetRoomInfo(String roomId) {
         OkHttpClient okhttpClient = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
-        Request request = builder.get().url("https://www.toplaygame.cn/phpserver/public/index.php/race/room/get_room_info_by_id?id=" + roomId).build();
+        String url =  Conf.serviceAddress+ InterfaceUrl.get_room_info_by_id+"?id=" + roomId;
+        Request request = builder.get().url(url).build();
         Call call = okhttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
