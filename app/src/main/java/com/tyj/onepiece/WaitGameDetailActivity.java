@@ -16,6 +16,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -77,6 +83,30 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        ///////////////////
+        ListView lv = (ListView) findViewById(R.id.wait_game_detail_member_list_view);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map1 = new HashMap<String, Object>();
+        map1.put("name", "我是风ddddddddddddddddddddddddddddddddddddddd");
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        list.add(map1);
+        lv.setAdapter(new SimpleAdapter(this, list, R.layout.play_member_item,
+                new String[]{"name"}, new int[]{ R.id.name}));
+
+        ///////////////////
     }
 
     public void doGetRoomInfo(String roomId) {

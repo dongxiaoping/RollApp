@@ -23,6 +23,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //////////
+        Intent intent = new Intent();
+        intent.putExtra("roomId", "34");
+       // intent.setClass(this, TestActivity.class);
+        intent.setClass(this, WaitGameDetailActivity.class);
+        this.startActivity(intent);
+        //////////
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new BoxImageAdapter(this, this.text, this.mThumbIds));

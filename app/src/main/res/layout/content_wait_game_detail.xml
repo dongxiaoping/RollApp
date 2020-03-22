@@ -9,25 +9,42 @@
     tools:showIn="@layout/activity_wait_game_detail">
 
     <LinearLayout
+        android:id="@+id/wait_game_detail_one"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_weight="2"
+        android:layout_margin="0dp"
+        android:gravity="center"
+        android:background="@drawable/underline"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
 
         <Button
             android:id="@+id/wait_game_detail_share_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:text="点击分享"
+            android:textSize="20sp"
+            android:textColor="@color/commo_text_color"
             tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/wait_game_detail_start_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
+            android:textSize="20sp"
             android:text="开始游戏"
+            android:textColor="@color/commo_text_color"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/wait_game_detail_member_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="85dp"
+        tools:ignore="MissingConstraints"></ListView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
