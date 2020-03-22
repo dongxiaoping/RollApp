@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp">
 
     <TextView
         android:id="@+id/textMemberCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="22dp"
         android:gravity="right"
         android:padding="5dp"
         android:text="房间人数:" />
 
     <RadioGroup
         android:id="@+id/radioMemberCount"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/underline"
         android:layout_toRightOf="@id/textMemberCount"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_weight="3"
+        android:layout_marginTop="20dp"
         android:contentDescription="房间人数"
         android:orientation="horizontal">
 
@@ -28,28 +31,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:layout_weight="1"
             android:text="6人" />
 
         <RadioButton
             android:id="@+id/radioMemberCountTwo"
             android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text="8人" />
         <RadioButton
             android:id="@+id/radioMemberCountThree"
             android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text="10人" />
     </RadioGroup>
+
+
 
     <TextView
         android:id="@+id/textRaceCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="22dp"
         android:layout_below="@+id/textMemberCount"
         android:gravity="right"
         android:padding="5dp"
@@ -57,12 +65,14 @@
 
     <RadioGroup
         android:id="@+id/radioRaceCount"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="@drawable/underline"
         android:layout_below="@id/radioMemberCount"
         android:layout_toRightOf="@id/textRaceCount"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="总共局数"
         android:orientation="horizontal">
 
@@ -70,6 +80,7 @@
             android:id="@+id/radioRaceCountOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="true"
             android:text="10局" />
 
@@ -78,51 +89,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
+            android:layout_weight="1"
             android:text="20局" />
         <RadioButton
             android:id="@+id/radioRaceCountThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="30dp"
             android:text="25局" />
-    </RadioGroup>
-
-
-    <TextView
-        android:id="@+id/textCostDaimondType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/textRaceCount"
-        android:gravity="right"
-        android:padding="5dp"
-        android:text="扣钻方式:" />
-
-    <RadioGroup
-        android:id="@+id/radioCostDaimondType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/radioRaceCount"
-        android:layout_toRightOf="@id/textCostDaimondType"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="扣钻方式"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radioCostDaimondTypeOne"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="代开房间" />
-
-        <RadioButton
-            android:id="@+id/radioCostDaimondTypeTwo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="AA付费" />
     </RadioGroup>
 
     <TextView
@@ -130,20 +105,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/textCostDaimondType"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/textRaceCount"
         android:gravity="right"
         android:padding="5dp"
         android:text="最高下注:" />
 
     <RadioGroup
         android:id="@+id/radioPayLimit"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radioCostDaimondType"
+        android:layout_below="@id/radioRaceCount"
         android:layout_toRightOf="@id/textPayLimit"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/underline"
+        android:layout_weight="3"
+        android:layout_marginTop="20dp"
         android:contentDescription="最高下注"
         android:orientation="horizontal">
 
@@ -152,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:layout_weight="1"
             android:text="10" />
 
         <RadioButton
@@ -159,21 +137,64 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
+            android:layout_weight="1"
             android:text="20" />
 
         <RadioButton
             android:id="@+id/radioPayLimitThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="30dp"
             android:text="50" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textCostDaimondType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/textPayLimit"
+        android:gravity="right"
+        android:padding="5dp"
+        android:text="扣钻方式:" />
+
+    <RadioGroup
+        android:id="@+id/radioCostDaimondType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radioPayLimit"
+        android:layout_weight="2"
+        android:background="@drawable/underline"
+        android:layout_toRightOf="@id/textCostDaimondType"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="扣钻方式"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioCostDaimondTypeOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:layout_weight="1"
+            android:text="代开房间" />
+
+        <RadioButton
+            android:id="@+id/radioCostDaimondTypeTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp"
+            android:text="AA付费" />
     </RadioGroup>
 
     <Button
         android:id="@+id/creat_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radioPayLimit"
+        android:layout_below="@id/radioCostDaimondType"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="创建" />
