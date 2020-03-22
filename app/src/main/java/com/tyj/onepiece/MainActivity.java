@@ -15,21 +15,21 @@ import com.tyj.onepiece.componet.BoxImageAdapter;
 public class MainActivity extends AppCompatActivity {
     //九宫格图片
     private int[] mThumbIds = {
-            R.drawable.share_ico, R.drawable.create_room_icon, R.drawable.my_home
+            R.drawable.begin_game_icon, R.drawable.create_room_icon, R.drawable.my_home
     };
     //九宫格文字
-    private String text[] = {"进入游戏", "创建房间", "运行中房间"};
+    private String text[] = {"进入游戏", "创建房间", "待开房间"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //////////
-        Intent intent = new Intent();
-        intent.putExtra("roomId", "34");
-       // intent.setClass(this, TestActivity.class);
-        intent.setClass(this, WaitGameDetailActivity.class);
-        this.startActivity(intent);
-        //////////
+//        //////////
+//        Intent intent = new Intent();
+//        intent.putExtra("roomId", "34");
+//       // intent.setClass(this, TestActivity.class);
+//        intent.setClass(this, WaitGameDetailActivity.class);
+//        this.startActivity(intent);
+//        //////////
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new BoxImageAdapter(this, this.text, this.mThumbIds));
