@@ -39,7 +39,7 @@ import okhttp3.Response;
 /*
  *待开始房间列表
  * */
-public class WaitGameListActivity extends AppCompatActivity{
+public class WaitGameListActivity extends AppCompatActivity {
     private Handler handler;
     public JSONArray noBeginRoomList;
 
@@ -119,10 +119,16 @@ public class WaitGameListActivity extends AppCompatActivity{
             String roomId = dataobj.getString("id");
             String memberLimit = dataobj.getString("memberLimit");
             String memberCount = dataobj.getString("memberCount");
+            int roomState = Integer.parseInt(dataobj.getString("roomState"));
             Map<String, Object> map1 = new HashMap<String, Object>();
             map1.put("roomId", roomId);
             map1.put("memberLimit", memberLimit);
             map1.put("memberCount", memberCount);
+            if (roomState == 1) {
+                map1.put("roomStateDesc", "待开始");
+            } else {
+                map1.put("roomStateDesc", "进行中");
+            }
             list.add(map1);
         }
         return list;
@@ -133,7 +139,8 @@ public class WaitGameListActivity extends AppCompatActivity{
         List<Map<String, Object>> list = this.transData(jSONArrayDatalist);
         ListView lv = (ListView) findViewById(R.id.lv);
         lv.setAdapter(new SimpleAdapter(this, list, R.layout.activity_wait_game_list_item,
-                new String[]{"roomId", "memberCount"}, new int[]{R.id.title, R.id.context}));
+                new String[]{"roomId", "memberCount", "memberLimit", "roomStateDesc"},
+                new int[]{R.id.wait_game_room_name, R.id.wait_game_ren, R.id.wait_game_total_ren, R.id.wait_game_room_state_desc}));
         lv.setOnItemClickListener(new OnItemClickListener() {
             //list点击事件
             @Override

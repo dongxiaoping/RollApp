@@ -82,7 +82,7 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         ListView lv = (ListView) findViewById(R.id.wait_game_detail_member_list_view);
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map1 = new HashMap<String, Object>();
-        map1.put("name", "我是风ddddddddddddddddddddddddddddddddddddddd");
+        map1.put("name", "我是风ddddddddddddd");
         list.add(map1);
         list.add(map1);
         list.add(map1);
