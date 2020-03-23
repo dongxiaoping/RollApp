@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -19,6 +21,8 @@ import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.tyj.onepiece.componet.Conf;
 import com.tyj.onepiece.componet.InterfaceUrl;
 
@@ -31,18 +35,33 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
 /*
-*待开始房间列表
-* */
-public class WaitGameListActivity extends AppCompatActivity {
+ *待开始房间列表
+ * */
+public class WaitGameListActivity extends AppCompatActivity{
     private Handler handler;
     public JSONArray noBeginRoomList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_game_list);
+        Toolbar toolbar = findViewById(R.id.toolbarcc);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         handler = new Handler();
         this.doGetNotBeginRoom();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) { //返回按钮
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void doGetNotBeginRoom() {
@@ -50,7 +69,7 @@ public class WaitGameListActivity extends AppCompatActivity {
         OkHttpClient okhttpClient = new OkHttpClient();
         //构建Request
         Request.Builder builder = new Request.Builder();
-        String url = Conf.serviceAddress+ InterfaceUrl.get_not_begin_room_list_by_user_id+"?userId=2969";
+        String url = Conf.serviceAddress + InterfaceUrl.get_not_begin_room_list_by_user_id + "?userId=2969";
         Request request = builder.get().url(url).build();
         //将Request封装为Call
         Call call = okhttpClient.newCall(request);
@@ -120,12 +139,12 @@ public class WaitGameListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
                 try {
-                    String roomId =   String.valueOf((Integer) WaitGameListActivity.this.noBeginRoomList.getJSONObject(p3).get("id"));
+                    String roomId = String.valueOf((Integer) WaitGameListActivity.this.noBeginRoomList.getJSONObject(p3).get("id"));
                     Intent intent = new Intent();
                     intent.putExtra("roomId", roomId);
                     intent.setClass(WaitGameListActivity.this, WaitGameDetailActivity.class);
                     WaitGameListActivity.this.startActivity(intent);
-                   // Toast.makeText(WaitGameListActivity.this, roomId, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(WaitGameListActivity.this, roomId, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

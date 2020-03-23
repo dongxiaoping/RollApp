@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.begin_game_icon, R.drawable.create_room_icon, R.drawable.my_home
     };
     //九宫格文字
-    private String text[] = {"进入游戏", "创建房间", "待开房间"};
+    private String text[] = {"进入游戏", "创建房间", "运行中房间"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
