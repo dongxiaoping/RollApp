@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -50,19 +51,11 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_wait_game_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         handler = new Handler();
 
         chenXingShare = new ChenXingShare();
         chenXingShare.initChenXingShare(WaitGameDetailActivity.this);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         Intent intent = getIntent();
         this.roomId = intent.getStringExtra("roomId");
@@ -108,6 +101,16 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
                 new String[]{"name"}, new int[]{ R.id.name}));
 
         ///////////////////
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) { //返回按钮
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void doGetRoomInfo(String roomId) {

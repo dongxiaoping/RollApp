@@ -28,7 +28,7 @@
                 android:gravity="center_horizontal"
                 android:id="@+id/room_num_text"
                     android:text=""
-                android:textSize="14sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Button
