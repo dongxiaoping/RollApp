@@ -64,6 +64,21 @@
                 android:text=""
                 android:layout_marginLeft="30dp"
                 android:textSize="18sp"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="right" >
+                <TextView
+                    android:id="@+id/wait_game_room_time_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginRight="5dp"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>

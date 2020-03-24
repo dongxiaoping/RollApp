@@ -51,7 +51,7 @@ public class WaitGameListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         handler = new Handler();
-        this.doGetNotBeginRoom();
+        this.doGetOnRoom();
     }
 
     @Override
@@ -64,12 +64,12 @@ public class WaitGameListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void doGetNotBeginRoom() {
+    public void doGetOnRoom() {
         //创建okhttpClient对象
         OkHttpClient okhttpClient = new OkHttpClient();
         //构建Request
         Request.Builder builder = new Request.Builder();
-        String url = Conf.serviceAddress + InterfaceUrl.get_not_begin_room_list_by_user_id + "?userId=2969";
+        String url = Conf.serviceAddress + InterfaceUrl.get_on_room_list_by_user_id + "?userId=2969";
         Request request = builder.get().url(url).build();
         //将Request封装为Call
         Call call = okhttpClient.newCall(request);
@@ -119,11 +119,13 @@ public class WaitGameListActivity extends AppCompatActivity {
             String roomId = dataobj.getString("id");
             String memberLimit = dataobj.getString("memberLimit");
             String memberCount = dataobj.getString("memberCount");
+            String[] creatTime = dataobj.getString("creatTime").split(" ");
             int roomState = Integer.parseInt(dataobj.getString("roomState"));
             Map<String, Object> map1 = new HashMap<String, Object>();
             map1.put("roomId", roomId);
             map1.put("memberLimit", memberLimit);
             map1.put("memberCount", memberCount);
+            map1.put("creatTime", creatTime[1]);
             if (roomState == 1) {
                 map1.put("roomStateDesc", "待开始");
             } else {
@@ -139,8 +141,9 @@ public class WaitGameListActivity extends AppCompatActivity {
         List<Map<String, Object>> list = this.transData(jSONArrayDatalist);
         ListView lv = (ListView) findViewById(R.id.lv);
         lv.setAdapter(new SimpleAdapter(this, list, R.layout.activity_wait_game_list_item,
-                new String[]{"roomId", "memberCount", "memberLimit", "roomStateDesc"},
-                new int[]{R.id.wait_game_room_name, R.id.wait_game_ren, R.id.wait_game_total_ren, R.id.wait_game_room_state_desc}));
+                new String[]{"roomId", "memberCount", "memberLimit", "roomStateDesc", "creatTime"},
+                new int[]{R.id.wait_game_room_name, R.id.wait_game_ren, R.id.wait_game_total_ren,
+                        R.id.wait_game_room_state_desc, R.id.wait_game_room_time_desc}));
         lv.setOnItemClickListener(new OnItemClickListener() {
             //list点击事件
             @Override
