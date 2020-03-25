@@ -127,9 +127,9 @@ public class WaitGameListActivity extends AppCompatActivity {
             map1.put("memberCount", memberCount);
             map1.put("creatTime", creatTime[1]);
             if (roomState == 1) {
-                map1.put("roomStateDesc", "待开始");
+                map1.put("roomStateDesc", "待开始：");
             } else {
-                map1.put("roomStateDesc", "进行中");
+                map1.put("roomStateDesc", "进行中：");
             }
             list.add(map1);
         }
