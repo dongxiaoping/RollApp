@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.tyj.onepiece.Service.SocketService;
 import com.tyj.onepiece.componet.BoxImageAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,12 +24,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        startService(new Intent(getBaseContext(), SocketService.class));
 //        //////////
-//        Intent intent = new Intent();
-//        intent.putExtra("roomId", "34");
-//       // intent.setClass(this, TestActivity.class);
-//        intent.setClass(this, WaitGameDetailActivity.class);
-//        this.startActivity(intent);
+/*        Intent intent = new Intent();
+        intent.putExtra("roomId", "756");
+        intent.setClass(this, WaitGameDetailActivity.class);
+       this.startActivity(intent);*/
 //        //////////
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView) findViewById(R.id.gridview);

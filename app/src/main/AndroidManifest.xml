@@ -50,6 +50,8 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <service android:enabled="true" android:name="com.tyj.onepiece.Service.SocketService" />
     </application>
 
 </manifest>

@@ -7,12 +7,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.tyj.onepiece.Service.SocketService;
 import com.tyj.onepiece.componet.ChenXingShare;
 import com.tyj.onepiece.componet.Conf;
-import com.tyj.onepiece.componet.JWebSocketClient;
-import com.tyj.onepiece.componet.InterfaceUrl;
 import com.tyj.onepiece.componet.InterfaceUrl;
 import com.tyj.onepiece.model.Player;
 import com.tyj.onepiece.model.Room;
@@ -21,14 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +39,6 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
     public String roomId;
     private Handler handler;
     public Room room;
-    public JWebSocketClient socketClient;
     private ChenXingShare chenXingShare;
     public List<Player> memberList;
 
@@ -62,26 +56,11 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
 
         Intent intent = getIntent();
         this.roomId = intent.getStringExtra("roomId");
-        this.roomId = "756";
         this.doGetRoomInfo(this.roomId);
         this.doGetMemberInfo(this.roomId);
 
         findViewById(R.id.wait_game_detail_share_button).setOnClickListener(this);
         findViewById(R.id.wait_game_detail_start_button).setOnClickListener(this);
-
-        URI uri = URI.create("wss://www.toplaygame.cn/wss");
-        this.socketClient = new JWebSocketClient(uri) {
-            @Override
-            public void onMessage(String message) {
-                //message就是接收到的消息
-                Log.e("JWebSClientService", message);
-            }
-        };
-        try {
-            this.socketClient.connectBlocking();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -210,7 +189,13 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
                     jsonObjectb.put("type", "startRoomGame");
                     jsonObjectb.put("info", jsonObjecta);
                     final String toInfo = jsonObjectb.toString();
-                    this.socketClient.send(toInfo);//发送开始游戏通知
+
+                    Intent intent = new Intent(this, SocketService.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Key", SocketService.Control.SEND_MESSAGE);
+                    bundle.putSerializable("Message", toInfo);
+                    intent.putExtras(bundle);
+                    startService(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
