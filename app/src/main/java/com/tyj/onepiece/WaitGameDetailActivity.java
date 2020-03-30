@@ -1,5 +1,7 @@
 package com.tyj.onepiece;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,8 +22,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +44,7 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
     private Handler handler;
     public Room room;
     private ChenXingShare chenXingShare;
+    private Player selectedMember;
     public List<Player> memberList;
 
     @Override
@@ -127,6 +132,50 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         }
         lv.setAdapter(new SimpleAdapter(this, dataList, R.layout.play_member_item,
                 new String[]{"nick"}, new int[]{R.id.name}));
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //list点击事件
+            @Override
+            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
+                Player member = WaitGameDetailActivity.this.memberList.get(p3);
+                ShowChoise(member);
+            }
+        });
+    }
+
+    private void ShowChoise(Player member) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        this.selectedMember = member;
+        builder.setTitle("踢出玩家");
+        builder.setMessage("踢出玩家"+member.getNick()+"?");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                JSONObject jsonObjecta = new JSONObject();
+                jsonObjecta.put("roomId", WaitGameDetailActivity.this.selectedMember.getRoomId().trim());
+                jsonObjecta.put("kickUserId", WaitGameDetailActivity.this.selectedMember.getId());
+                JSONObject jsonObjectb = new JSONObject();
+                jsonObjectb.put("type", "kickOutMemberFromRoom");
+                jsonObjectb.put("info", jsonObjecta);
+                final String toInfo = jsonObjectb.toString();
+
+                Intent intent = new Intent(WaitGameDetailActivity.this, SocketService.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Key", SocketService.Control.SEND_MESSAGE);
+                bundle.putSerializable("Message", toInfo);
+                intent.putExtras(bundle);
+                startService(intent);
+                System.out.println("点了确定"); //TODO 成功怎么回调通知
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                System.out.println("点了取消");
+            }
+        });
+        //一样要show
+        builder.show();
     }
 
     public void doGetRoomInfo(String roomId) {
@@ -181,8 +230,8 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
                         this.room.getRoomPay());
                 break;
             case R.id.wait_game_detail_start_button:
-                JSONObject jsonObjecta = new JSONObject();
                 try {
+                    JSONObject jsonObjecta = new JSONObject();
                     jsonObjecta.put("roomId", this.roomId.toString().trim());
                     jsonObjecta.put("userId", "2969");
                     JSONObject jsonObjectb = new JSONObject();

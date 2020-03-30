@@ -21,8 +21,6 @@ import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.tyj.onepiece.componet.Conf;
 import com.tyj.onepiece.componet.InterfaceUrl;
 
