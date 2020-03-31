@@ -1,6 +1,7 @@
 package com.tyj.onepiece.componet;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,19 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tyj.onepiece.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.List;
 import java.util.Map;
 
-public class GeneralAdapter extends RecyclerView.Adapter<GeneralAdapter.MyViewHolder> {
+public class WaitGameListAdapter extends RecyclerView.Adapter<WaitGameListAdapter.MyViewHolder> {
     //当前上下文对象
     Context context;
     //RecyclerView填充Item数据的List对象
     List<Map<String, Object>>  datas;
 
-    public GeneralAdapter(Context context, List<Map<String, Object>> datas){
+    public WaitGameListAdapter(Context context, List<Map<String, Object>> datas){
         this.context = context;
         this.datas = datas;
     }
@@ -32,9 +30,7 @@ public class GeneralAdapter extends RecyclerView.Adapter<GeneralAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //实例化得到Item布局文件的View对象
-        View v = View.inflate(context, R.layout.activity_wait_game_list_item,null);
-        //返回MyViewHolder的对象
+        View v = LayoutInflater.from(context).inflate(R.layout.activity_wait_game_list_item, parent, false);
         return new MyViewHolder(v);
     }
 

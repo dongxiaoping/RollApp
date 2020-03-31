@@ -1,11 +1,11 @@
 package com.tyj.onepiece;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +20,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tyj.onepiece.componet.Conf;
-import com.tyj.onepiece.componet.GeneralAdapter;
+import com.tyj.onepiece.componet.WaitGameListAdapter;
 import com.tyj.onepiece.componet.InterfaceUrl;
 
 import org.json.JSONArray;
@@ -42,6 +41,7 @@ import okhttp3.Response;
 public class WaitGameListActivity extends AppCompatActivity {
     private Handler handler;
     public RefreshLayout refreshLayout;
+    public boolean isFirstLoad = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,8 @@ public class WaitGameListActivity extends AppCompatActivity {
                 WaitGameListActivity.this.doGetOnRoom();
             }
         });
-
+        RecyclerView recyclerView = findViewById(R.id.lv);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL)); //添加item线
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -66,7 +67,7 @@ public class WaitGameListActivity extends AppCompatActivity {
                         List<Map<String, Object>> mList  = ( List<Map<String, Object>>) msg.obj;
                         RecyclerView recyclerView = findViewById(R.id.lv);
                         recyclerView.setLayoutManager(new LinearLayoutManager(WaitGameListActivity.this));
-                        recyclerView.setAdapter(new GeneralAdapter(WaitGameListActivity.this,mList));
+                        recyclerView.setAdapter(new WaitGameListAdapter(WaitGameListActivity.this,mList));
                         WaitGameListActivity.this.refreshLayout.finishRefresh(true);
                         break;
                     case 2:         //加载更多
@@ -120,7 +121,12 @@ public class WaitGameListActivity extends AppCompatActivity {
                                         Message message = new Message();
                                         message.what = 1 ;
                                         message.obj = list ;
-                                        handler.sendMessageDelayed(message,2000);
+                                        long delayMillis = 1500;
+                                        if(WaitGameListActivity.this.isFirstLoad){
+                                            delayMillis = 100;
+                                            WaitGameListActivity.this.isFirstLoad = false;
+                                        }
+                                        handler.sendMessageDelayed(message,delayMillis);
                                     } else {
                                         System.out.println("房间创建失败");
                                     }
