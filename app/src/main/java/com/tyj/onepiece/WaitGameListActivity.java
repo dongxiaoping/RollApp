@@ -3,13 +3,15 @@ package com.tyj.onepiece;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,11 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-import android.widget.SimpleAdapter;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView;
-
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tyj.onepiece.componet.Conf;
+import com.tyj.onepiece.componet.GeneralAdapter;
 import com.tyj.onepiece.componet.InterfaceUrl;
 
 import org.json.JSONArray;
@@ -39,8 +41,7 @@ import okhttp3.Response;
  * */
 public class WaitGameListActivity extends AppCompatActivity {
     private Handler handler;
-    public JSONArray noBeginRoomList;
-
+    public RefreshLayout refreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,33 @@ public class WaitGameListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarcc);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        handler = new Handler();
+
+        WaitGameListActivity.this.refreshLayout = (RefreshLayout)findViewById(R.id.waitRefreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                WaitGameListActivity.this.doGetOnRoom();
+            }
+        });
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what){
+                    case 1:         //刷新加载
+                        List<Map<String, Object>> mList  = ( List<Map<String, Object>>) msg.obj;
+                        RecyclerView recyclerView = findViewById(R.id.lv);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(WaitGameListActivity.this));
+                        recyclerView.setAdapter(new GeneralAdapter(WaitGameListActivity.this,mList));
+                        WaitGameListActivity.this.refreshLayout.finishRefresh(true);
+                        break;
+                    case 2:         //加载更多
+
+                        break;
+                }
+                return false;
+            }
+        });
         this.doGetOnRoom();
     }
 
@@ -63,16 +90,11 @@ public class WaitGameListActivity extends AppCompatActivity {
     }
 
     public void doGetOnRoom() {
-        //创建okhttpClient对象
         OkHttpClient okhttpClient = new OkHttpClient();
-        //构建Request
         Request.Builder builder = new Request.Builder();
         String url = Conf.serviceAddress + InterfaceUrl.get_on_room_list_by_user_id + "?userId=2969";
         Request request = builder.get().url(url).build();
-        //将Request封装为Call
         Call call = okhttpClient.newCall(request);
-        //执行Call
-        //异步执行   提供回调接口
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -93,8 +115,12 @@ public class WaitGameListActivity extends AppCompatActivity {
                                     demoJson = new JSONObject(result);
                                     Integer flag = Integer.parseInt(demoJson.getString("status"));
                                     if (flag == 1) {
-                                        JSONArray list = demoJson.getJSONArray("data");
-                                        WaitGameListActivity.this.showList(list);
+                                        JSONArray JSONArrayList = demoJson.getJSONArray("data");
+                                        List<Map<String, Object>> list = WaitGameListActivity.this.transData(JSONArrayList);
+                                        Message message = new Message();
+                                        message.what = 1 ;
+                                        message.obj = list ;
+                                        handler.sendMessageDelayed(message,2000);
                                     } else {
                                         System.out.println("房间创建失败");
                                     }
@@ -132,31 +158,5 @@ public class WaitGameListActivity extends AppCompatActivity {
             list.add(map1);
         }
         return list;
-    }
-
-    public void showList(JSONArray jSONArrayDatalist) throws JSONException {
-        WaitGameListActivity.this.noBeginRoomList = jSONArrayDatalist;
-        List<Map<String, Object>> list = this.transData(jSONArrayDatalist);
-        ListView lv = (ListView) findViewById(R.id.lv);
-        lv.setAdapter(new SimpleAdapter(this, list, R.layout.activity_wait_game_list_item,
-                new String[]{"roomId", "memberCount", "memberLimit", "roomStateDesc", "creatTime"},
-                new int[]{R.id.wait_game_room_name, R.id.wait_game_ren, R.id.wait_game_total_ren,
-                        R.id.wait_game_room_state_desc, R.id.wait_game_room_time_desc}));
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            //list点击事件
-            @Override
-            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
-                try {
-                    String roomId = String.valueOf((Integer) WaitGameListActivity.this.noBeginRoomList.getJSONObject(p3).get("id"));
-                    Intent intent = new Intent();
-                    intent.putExtra("roomId", roomId);
-                    intent.setClass(WaitGameListActivity.this, WaitGameDetailActivity.class);
-                    WaitGameListActivity.this.startActivity(intent);
-                    // Toast.makeText(WaitGameListActivity.this, roomId, Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }
