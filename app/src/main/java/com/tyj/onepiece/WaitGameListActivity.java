@@ -22,6 +22,7 @@ import java.util.HashMap;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tyj.onepiece.componet.Conf;
+import com.tyj.onepiece.componet.DateUtil;
 import com.tyj.onepiece.componet.WaitGameListAdapter;
 import com.tyj.onepiece.componet.InterfaceUrl;
 
@@ -42,6 +43,7 @@ public class WaitGameListActivity extends AppCompatActivity {
     private Handler handler;
     public RefreshLayout refreshLayout;
     public boolean isFirstLoad = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class WaitGameListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        WaitGameListActivity.this.refreshLayout = (RefreshLayout)findViewById(R.id.waitRefreshLayout);
+        WaitGameListActivity.this.refreshLayout = (RefreshLayout) findViewById(R.id.waitRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -58,16 +60,16 @@ public class WaitGameListActivity extends AppCompatActivity {
             }
         });
         RecyclerView recyclerView = findViewById(R.id.lv);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL)); //添加item线
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); //添加item线
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                switch (msg.what){
+                switch (msg.what) {
                     case 1:         //刷新加载
-                        List<Map<String, Object>> mList  = ( List<Map<String, Object>>) msg.obj;
+                        List<Map<String, Object>> mList = (List<Map<String, Object>>) msg.obj;
                         RecyclerView recyclerView = findViewById(R.id.lv);
                         recyclerView.setLayoutManager(new LinearLayoutManager(WaitGameListActivity.this));
-                        recyclerView.setAdapter(new WaitGameListAdapter(WaitGameListActivity.this,mList));
+                        recyclerView.setAdapter(new WaitGameListAdapter(WaitGameListActivity.this, mList));
                         WaitGameListActivity.this.refreshLayout.finishRefresh(true);
                         break;
                     case 2:         //加载更多
@@ -119,14 +121,14 @@ public class WaitGameListActivity extends AppCompatActivity {
                                         JSONArray JSONArrayList = demoJson.getJSONArray("data");
                                         List<Map<String, Object>> list = WaitGameListActivity.this.transData(JSONArrayList);
                                         Message message = new Message();
-                                        message.what = 1 ;
-                                        message.obj = list ;
+                                        message.what = 1;
+                                        message.obj = list;
                                         long delayMillis = 1500;
-                                        if(WaitGameListActivity.this.isFirstLoad){
+                                        if (WaitGameListActivity.this.isFirstLoad) {
                                             delayMillis = 100;
                                             WaitGameListActivity.this.isFirstLoad = false;
                                         }
-                                        handler.sendMessageDelayed(message,delayMillis);
+                                        handler.sendMessageDelayed(message, delayMillis);
                                     } else {
                                         System.out.println("房间创建失败");
                                     }
@@ -149,13 +151,16 @@ public class WaitGameListActivity extends AppCompatActivity {
             String roomId = dataobj.getString("id");
             String memberLimit = dataobj.getString("memberLimit");
             String memberCount = dataobj.getString("memberCount");
-            String[] creatTime = dataobj.getString("creatTime").split(" ");
+            String pattern = "yyyy-MM-dd HH:mm:ss";
+            long old = DateUtil.getStringToDate(dataobj.getString("creatTime"), pattern);
+            long now = DateUtil.getCurTimeLong();
+            int creatTime = (int)(Math.ceil((now - old)/60000));
             int roomState = Integer.parseInt(dataobj.getString("roomState"));
             Map<String, Object> map1 = new HashMap<String, Object>();
             map1.put("roomId", roomId);
             map1.put("memberLimit", memberLimit);
             map1.put("memberCount", memberCount);
-            map1.put("creatTime", creatTime[1]);
+            map1.put("creatTime",  String.valueOf(creatTime)+"分钟");
             if (roomState == 1) {
                 map1.put("roomStateDesc", "待开始：");
             } else {
