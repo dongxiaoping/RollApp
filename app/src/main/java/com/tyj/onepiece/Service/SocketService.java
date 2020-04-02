@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-
 import com.tyj.onepiece.componet.JWebSocketClient;
 
-import java.net.URI;
-import java.util.ResourceBundle;
+import org.java_websocket.enums.ReadyState;
 
+import java.net.URI;
+/*
+ * websocket 服务
+ * */
 public class SocketService extends Service {
 
     /** 标识服务如果被杀死之后的行为 */
@@ -38,9 +38,20 @@ public class SocketService extends Service {
         URI uri = URI.create("wss://www.toplaygame.cn/wss");
         SocketService.this.socketClient = new JWebSocketClient(uri) {
             @Override
-            public void onMessage(String message) {
-                //message就是接收到的消息
+            public void onMessage(String message) { //message就是接收到的消息
+                Intent intent1 = new Intent();
+                intent1.setAction("socket.getMessage");
+                intent1.putExtra("msg", message);
+                sendBroadcast(intent1);
                 Log.i("JWebSClientService", message);
+            }
+            @Override
+            public void onClose(int code, String reason, boolean remote) {
+                Intent intent1 = new Intent();
+                intent1.setAction("socket.close");
+                intent1.putExtra("msg", "socket关闭了！");
+                sendBroadcast(intent1);
+                Log.i("JWebSocketClient", "onClose()");
             }
         };
         try {
@@ -54,7 +65,7 @@ public class SocketService extends Service {
     /** 调用startService()启动服务时回调 */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "服务已经启动", Toast.LENGTH_LONG).show();
+      //  Toast.makeText(this, "服务已经启动", Toast.LENGTH_LONG).show();
         this.startId = startId;
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -62,8 +73,11 @@ public class SocketService extends Service {
             if (control != null) {
                 switch (control) {
                     case SEND_MESSAGE:
+                        if(!SocketService.this.socketClient.getReadyState().equals(ReadyState.OPEN)){
+                            Log.i("JWebSocketClient", "socket未连接成功，无法发送信息！");
+                           break;
+                        }
                         String toInfo = (String) bundle.getSerializable("Message");
-
                         SocketService.this.socketClient.send(toInfo);
                         break;
                 }
@@ -94,6 +108,7 @@ public class SocketService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "服务已经停止", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, "服务已经停止", Toast.LENGTH_LONG).show();
+        Log.i("JWebSClientService", "socket服务停止了");
     }
 }

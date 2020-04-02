@@ -1,8 +1,11 @@
 package com.tyj.onepiece;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.alibaba.fastjson.JSON;
@@ -46,6 +49,23 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
     private ChenXingShare chenXingShare;
     private Player selectedMember;
     public List<Player> memberList;
+    BroadcastMain receiver; //广播通知接收器
+   //接受广播通知
+    public class BroadcastMain extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            String message =  intent.getStringExtra("msg");
+            if(action == "socket.getMessage"){
+                WaitGameDetailActivity.this.doGetMemberInfo(WaitGameDetailActivity.this.roomId);
+                System.out.println(message);
+            }else{
+                System.out.println("111");
+            }
+            System.out.println(message);
+            Toast.makeText(WaitGameDetailActivity.this, "接到了通知", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +86,14 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
 
         findViewById(R.id.wait_game_detail_share_button).setOnClickListener(this);
         findViewById(R.id.wait_game_detail_start_button).setOnClickListener(this);
+
+        ///
+        //新添代码，在代码中注册广播接收程序
+        receiver = new BroadcastMain();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("socket.getMessage");
+        registerReceiver(receiver, filter);
+        ///
     }
 
     @Override
@@ -126,9 +154,11 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < this.memberList.size(); i++) {
             Player memberItem = (Player) this.memberList.get(i);
-            Map<String, Object> map1 = new HashMap<String, Object>();
-            map1.put("nick", memberItem.getNick());
-            dataList.add(map1);
+            if(memberItem.getState() != 3){ //被踢出
+                Map<String, Object> map1 = new HashMap<String, Object>();
+                map1.put("nick", memberItem.getNick());
+                dataList.add(map1);
+            }
         }
         lv.setAdapter(new SimpleAdapter(this, dataList, R.layout.play_member_item,
                 new String[]{"nick"}, new int[]{R.id.name}));
@@ -153,7 +183,7 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
             public void onClick(DialogInterface dialog, int which) {
                 JSONObject jsonObjecta = new JSONObject();
                 jsonObjecta.put("roomId", WaitGameDetailActivity.this.selectedMember.getRoomId().trim());
-                jsonObjecta.put("kickUserId", WaitGameDetailActivity.this.selectedMember.getId());
+                jsonObjecta.put("kickUserId", WaitGameDetailActivity.this.selectedMember.getUserId());
                 JSONObject jsonObjectb = new JSONObject();
                 jsonObjectb.put("type", "kickOutMemberFromRoom");
                 jsonObjectb.put("info", jsonObjecta);

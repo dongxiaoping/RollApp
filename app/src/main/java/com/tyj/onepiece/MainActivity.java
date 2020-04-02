@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        startService(new Intent(getBaseContext(), SocketService.class));
+        startService(new Intent(getBaseContext(), SocketService.class)); //启动一个服务，服务里面开启websocket
 //        //////////
 /*        Intent intent = new Intent();
         intent.putExtra("roomId", "756");
