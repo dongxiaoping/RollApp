@@ -1,5 +1,6 @@
 package com.tyj.onepiece;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -154,13 +155,13 @@ public class WaitGameListActivity extends AppCompatActivity {
             String pattern = "yyyy-MM-dd HH:mm:ss";
             long old = DateUtil.getStringToDate(dataobj.getString("creatTime"), pattern);
             long now = DateUtil.getCurTimeLong();
-            int creatTime = (int)(Math.ceil((now - old)/60000));
+            int creatTime = (int) (Math.ceil((now - old) / 60000));
             int roomState = Integer.parseInt(dataobj.getString("roomState"));
             Map<String, Object> map1 = new HashMap<String, Object>();
             map1.put("roomId", roomId);
             map1.put("memberLimit", memberLimit);
             map1.put("memberCount", memberCount);
-            map1.put("creatTime",  String.valueOf(creatTime)+"分钟");
+            map1.put("creatTime", String.valueOf(creatTime) + "分钟");
             if (roomState == 1) {
                 map1.put("roomStateDesc", "待开始：");
             } else {
@@ -169,5 +170,11 @@ public class WaitGameListActivity extends AppCompatActivity {
             list.add(map1);
         }
         return list;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("执行了onActivityResult");
+        //this.doGetOnRoom();
     }
 }

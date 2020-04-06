@@ -168,12 +168,12 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
                 Player member = WaitGameDetailActivity.this.memberList.get(p3);
-                ShowChoise(member);
+                outPlayerDial(member);
             }
         });
     }
 
-    private void ShowChoise(Player member) {
+    private void outPlayerDial(Player member) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         this.selectedMember = member;
         builder.setTitle("踢出玩家");
@@ -260,25 +260,53 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
                         this.room.getRoomPay());
                 break;
             case R.id.wait_game_detail_start_button:
-                try {
-                    JSONObject jsonObjecta = new JSONObject();
-                    jsonObjecta.put("roomId", this.roomId.toString().trim());
-                    jsonObjecta.put("userId", "2969");
-                    JSONObject jsonObjectb = new JSONObject();
-                    jsonObjectb.put("type", "startRoomGame");
-                    jsonObjectb.put("info", jsonObjecta);
-                    final String toInfo = jsonObjectb.toString();
-
-                    Intent intent = new Intent(this, SocketService.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("Key", SocketService.Control.SEND_MESSAGE);
-                    bundle.putSerializable("Message", toInfo);
-                    intent.putExtras(bundle);
-                    startService(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                this.startPlayDial();
                 break;
         }
+    }
+
+    private void startPlay() {
+        try {
+            JSONObject jsonObjecta = new JSONObject();
+            jsonObjecta.put("roomId", this.roomId.toString().trim());
+            jsonObjecta.put("userId", "2969");
+            JSONObject jsonObjectb = new JSONObject();
+            jsonObjectb.put("type", "startRoomGame");
+            jsonObjectb.put("info", jsonObjecta);
+            final String toInfo = jsonObjectb.toString();
+
+            Intent intent = new Intent(this, SocketService.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Key", SocketService.Control.SEND_MESSAGE);
+            bundle.putSerializable("Message", toInfo);
+            intent.putExtras(bundle);
+            startService(intent);
+         //   WaitGameDetailActivity.this.finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startPlayDial() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("开始游戏");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                WaitGameDetailActivity.this.startPlay();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 }

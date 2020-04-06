@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,10 +54,15 @@ public class WaitGameListAdapter extends RecyclerView.Adapter<WaitGameListAdapte
             @Override
             public void onClick(View view) {
                 String roomId = String.valueOf(holder.wait_game_room_name.getText());
-                Intent intent = new Intent();
-                intent.putExtra("roomId", roomId);
-                intent.setClass(context, WaitGameDetailActivity.class);
-                context.startActivity(intent);
+                String stateDesc = String.valueOf(holder.wait_game_room_state_desc.getText());
+                if(stateDesc == "进行中："){
+                    Toast.makeText(context, "房间已开始！", Toast.LENGTH_LONG).show();
+                }else{
+                    Intent intent = new Intent();
+                    intent.putExtra("roomId", roomId);
+                    intent.setClass(context, WaitGameDetailActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
     }
