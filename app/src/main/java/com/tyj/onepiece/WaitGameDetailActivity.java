@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,11 +60,16 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
             if(action == "socket.getMessage"){
                 WaitGameDetailActivity.this.doGetMemberInfo(WaitGameDetailActivity.this.roomId);
                 System.out.println(message);
-            }else{
-                System.out.println("111");
+            }else if (action == "socket.is_connected"){
+                Log.i("JWebSClientService","socket连接状态:"+message);
+                if(message == "0"){
+                    WaitGameDetailActivity.this.showToConnectSocketDial();
+                }else{
+                    Toast.makeText(WaitGameDetailActivity.this, "socket已连接", Toast.LENGTH_LONG).show();
+                }
             }
             System.out.println(message);
-            Toast.makeText(WaitGameDetailActivity.this, "接到了通知", Toast.LENGTH_LONG).show();
+           // Toast.makeText(WaitGameDetailActivity.this, "接到了通知", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -92,8 +98,11 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         receiver = new BroadcastMain();
         IntentFilter filter = new IntentFilter();
         filter.addAction("socket.getMessage");
+        filter.addAction("socket.is_connected");
         registerReceiver(receiver, filter);
         ///
+
+        this.noticeGetSocketStatus();
     }
 
     @Override
@@ -205,6 +214,33 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
             }
         });
         //一样要show
+        builder.show();
+    }
+
+    //通过通知的形式通知获取socket状态
+    public  void  noticeGetSocketStatus(){
+        Intent intent = new Intent(WaitGameDetailActivity.this, SocketService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Key", SocketService.Control.SEND_SOCKET_STATUS);
+        bundle.putSerializable("Message", "");
+        intent.putExtras(bundle);
+        startService(intent);
+    }
+
+    //显示连接socket对话框
+    public  void  showToConnectSocketDial(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("服务断开，请重新连接");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
         builder.show();
     }
 

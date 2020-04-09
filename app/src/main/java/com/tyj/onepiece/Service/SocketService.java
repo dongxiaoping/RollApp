@@ -35,7 +35,7 @@ public class SocketService extends Service {
     public JWebSocketClient socketClient;
 
     public enum Control {
-        SEND_MESSAGE, PAUSE, STOP
+        SEND_MESSAGE,SEND_SOCKET_STATUS, PAUSE, STOP
     }
 
     /**
@@ -56,10 +56,7 @@ public class SocketService extends Service {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                Intent intent1 = new Intent();
-                intent1.setAction("socket.close");
-                intent1.putExtra("msg", "socket关闭了！");
-                sendBroadcast(intent1);
+                SocketService.this.noticeSocketStatus();
                 Log.i("JWebSocketClient", "onClose()");
             }
         };
@@ -86,16 +83,29 @@ public class SocketService extends Service {
                     case SEND_MESSAGE:
                         if (!SocketService.this.socketClient.getReadyState().equals(ReadyState.OPEN)) {
                             Log.i("JWebSocketClient", "socket未连接成功，无法发送信息！");
-                            this.onCreate();
                             break;
                         }
                         String toInfo = (String) bundle.getSerializable("Message");
                         SocketService.this.socketClient.send(toInfo);
                         break;
+                    case SEND_SOCKET_STATUS://将socket的连接状态以通知的形式发出去
+                        this.noticeSocketStatus();
+                        break;
                 }
             }
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public void noticeSocketStatus(){
+        Intent intent1 = new Intent();
+        intent1.setAction("socket.is_connected");
+        String isConnected = "0";
+        if (SocketService.this.socketClient.getReadyState().equals(ReadyState.OPEN)) {
+            isConnected = "1";
+        }
+        intent1.putExtra("msg", isConnected);
+        sendBroadcast(intent1);
     }
 
     /**
