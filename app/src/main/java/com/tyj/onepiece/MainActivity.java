@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                         intent.setData(Uri.parse("https://www.toplaygame.cn/web-mobile/test/main"));//Url 就是你要打开的网址
                         intent.setAction(Intent.ACTION_VIEW);
                         MainActivity.this.startActivity(intent); //启动浏览器
-                        Toast.makeText(MainActivity.this, "0", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         intent.setClass(MainActivity.this, CreatRoomActivity.class);

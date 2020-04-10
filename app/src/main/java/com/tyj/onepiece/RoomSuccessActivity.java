@@ -53,9 +53,9 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) { //返回按钮
             case android.R.id.home:
-                Intent intent = new Intent();
-                intent.setClass(RoomSuccessActivity.this, MainActivity.class);
-                RoomSuccessActivity.this.startActivity(intent);
+                Intent intent= new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
