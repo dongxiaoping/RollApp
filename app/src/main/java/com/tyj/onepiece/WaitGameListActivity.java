@@ -93,6 +93,13 @@ public class WaitGameListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        WaitGameListActivity.this.refreshLayout.autoRefresh();
+    }
+
     public void doGetOnRoom() {
         OkHttpClient okhttpClient = new OkHttpClient();
         Request.Builder builder = new Request.Builder();

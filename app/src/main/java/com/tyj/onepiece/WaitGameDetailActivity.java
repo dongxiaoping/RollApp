@@ -58,14 +58,26 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
             String action = intent.getAction();
             String message =  intent.getStringExtra("msg");
             if(action == "socket.getMessage"){
-                WaitGameDetailActivity.this.doGetMemberInfo(WaitGameDetailActivity.this.roomId);
+                JSONObject jsonObject = JSONObject.parseObject(message);
+                String flag = jsonObject.getString("type");
+                if(flag.equals("startGameResultNotice")){
+                    String resultFlag = jsonObject.getString("info");
+                    if(resultFlag.equals("0")){
+                        Toast.makeText(WaitGameDetailActivity.this, "游戏启动失败", Toast.LENGTH_LONG).show();
+                    }else{
+                      //  Toast.makeText(WaitGameDetailActivity.this, "游戏启动成功", Toast.LENGTH_LONG).show();
+                        WaitGameDetailActivity.this.finish();
+                    }
+                }else if(flag.equals("kickOutMemberFromRoomResult")){//
+                    WaitGameDetailActivity.this.doGetMemberInfo(WaitGameDetailActivity.this.roomId);
+                }
                 System.out.println(message);
             }else if (action == "socket.is_connected"){
                 Log.i("JWebSClientService","socket连接状态:"+message);
-                if(message == "0"){
+                if(message.equals("0")){
                     WaitGameDetailActivity.this.showToConnectSocketDial();
                 }else{
-                    Toast.makeText(WaitGameDetailActivity.this, "socket已连接", Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(WaitGameDetailActivity.this, "socket已连接", Toast.LENGTH_LONG).show();
                 }
             }
             System.out.println(message);
@@ -234,6 +246,12 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(WaitGameDetailActivity.this, SocketService.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Key", SocketService.Control.RECONNECT_SOCKET);
+                bundle.putSerializable("Message", "");
+                intent.putExtras(bundle);
+                startService(intent);
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -301,6 +319,7 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    //开始游戏
     private void startPlay() {
         try {
             JSONObject jsonObjecta = new JSONObject();

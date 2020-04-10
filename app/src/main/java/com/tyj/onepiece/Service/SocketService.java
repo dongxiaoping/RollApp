@@ -35,7 +35,7 @@ public class SocketService extends Service {
     public JWebSocketClient socketClient;
 
     public enum Control {
-        SEND_MESSAGE,SEND_SOCKET_STATUS, PAUSE, STOP
+        SEND_MESSAGE,SEND_SOCKET_STATUS, RECONNECT_SOCKET, PAUSE, STOP
     }
 
     /**
@@ -56,7 +56,6 @@ public class SocketService extends Service {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                SocketService.this.noticeSocketStatus();
                 Log.i("JWebSocketClient", "onClose()");
             }
         };
@@ -83,6 +82,7 @@ public class SocketService extends Service {
                     case SEND_MESSAGE:
                         if (!SocketService.this.socketClient.getReadyState().equals(ReadyState.OPEN)) {
                             Log.i("JWebSocketClient", "socket未连接成功，无法发送信息！");
+                            this.noticeSocketStatus();
                             break;
                         }
                         String toInfo = (String) bundle.getSerializable("Message");
@@ -91,6 +91,8 @@ public class SocketService extends Service {
                     case SEND_SOCKET_STATUS://将socket的连接状态以通知的形式发出去
                         this.noticeSocketStatus();
                         break;
+                    case RECONNECT_SOCKET://socket 重新连接
+                    SocketService.this.socketClient.reconnect();
                 }
             }
         }
