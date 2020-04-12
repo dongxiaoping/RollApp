@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
@@ -39,6 +39,36 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="点击分享" />
+
+        <LinearLayout
+            android:id="@+id/edit_share_linearLayout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/content_share_button"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_share_edit_id"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_share_edit_copy_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_share_linearLayout_id"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="复制" />
     </RelativeLayout>
 
 
