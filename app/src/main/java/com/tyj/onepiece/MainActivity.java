@@ -8,10 +8,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.tyj.onepiece.Service.SocketService;
 import com.tyj.onepiece.componet.BoxImageAdapter;
+import com.tyj.onepiece.componet.Conf;
+import com.tyj.onepiece.componet.InterfaceUrl;
+import com.tyj.onepiece.model.AgencyConfig;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     //九宫格图片
@@ -36,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new BoxImageAdapter(this, this.text, this.mThumbIds));
+        this.doGetConfig();
         //单击GridView元素的响应
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -45,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 switch (position) {
                     case 0:
-                        intent.setData(Uri.parse("https://www.toplaygame.cn/web-mobile/test/main"));//Url 就是你要打开的网址
+                        String adddr =   MeterApplication.getInstance().getAgencyConfig().getGameUrl();
+                        intent.setData(Uri.parse(adddr));//Url 就是你要打开的网址
                         intent.setAction(Intent.ACTION_VIEW);
                         MainActivity.this.startActivity(intent); //启动浏览器
                         break;
@@ -58,6 +71,34 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(intent);
                         break;
                     default:
+                }
+            }
+        });
+    }
+
+    public void doGetConfig() {
+        OkHttpClient okhttpClient = new OkHttpClient();
+        Request.Builder builder = new Request.Builder();
+        String url = Conf.serviceAddress + InterfaceUrl.get_game_agency_config;
+        Request request = builder.get().url(url).build();
+        Call call = okhttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String result = response.body().string();
+                System.out.println(result);
+                try {
+                    JSONObject JsonOb = new JSONObject(result);
+                    String obString = JsonOb.getString("data");
+                    AgencyConfig ob = JSON.parseObject(obString, AgencyConfig.class);
+                    MeterApplication.getInstance().setAgencyConfig(ob);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });

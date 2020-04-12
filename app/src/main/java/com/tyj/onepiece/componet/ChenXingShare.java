@@ -6,6 +6,7 @@ import com.chengxin.talk.cxsdk.callback.RegisterAppCallBack;
 import com.chengxin.talk.cxsdk.modelmsg.CXWebPageMessage;
 import com.chengxin.talk.cxsdk.openapi.CXAPIFactory;
 import com.chengxin.talk.cxsdk.openapi.ICXOpenAPI;
+import com.tyj.onepiece.MeterApplication;
 
 public class ChenXingShare {
     private ICXOpenAPI mIcxOpenAPI;
@@ -26,7 +27,8 @@ public class ChenXingShare {
     }
 
     private String getPlayUrlByRoomNum(String num) {
-        return "https://www.toplaygame.cn/web-mobile/test/main?roomId=" + num;
+        String adddr =   MeterApplication.getInstance().getAgencyConfig().getGameUrl();
+        return adddr+"?roomId=" + num;
     }
 
     public void initChenXingShare(Context that) {
