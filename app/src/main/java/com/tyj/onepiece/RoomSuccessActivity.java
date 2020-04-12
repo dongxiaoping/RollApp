@@ -63,7 +63,7 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
             roomPayString = "AA";
         }
         String item = "滚筒子邀请您一起玩，"+roomPayString+"房间【" + roomNum+"】，抢庄，人数"+renShu+
-                "，局数"+juShu+"，最高下注"+costLimit+",点击URL地址进入："+ this.getPlayUrlByRoomNum(roomNum);
+                "，局数"+juShu+"，最高下"+costLimit+",点击URL地址进入："+ this.getPlayUrlByRoomNum(roomNum);
         return item;
     }
 
