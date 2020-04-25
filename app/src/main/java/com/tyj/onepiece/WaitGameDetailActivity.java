@@ -324,7 +324,7 @@ public class WaitGameDetailActivity extends AppCompatActivity implements View.On
         try {
             JSONObject jsonObjecta = new JSONObject();
             jsonObjecta.put("roomId", this.roomId.toString().trim());
-            jsonObjecta.put("userId", "2969");
+            jsonObjecta.put("userId", "3400");
             JSONObject jsonObjectb = new JSONObject();
             jsonObjectb.put("type", "startRoomGame");
             jsonObjectb.put("info", jsonObjecta);

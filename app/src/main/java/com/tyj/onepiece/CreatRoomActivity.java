@@ -81,7 +81,7 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
 
             private void requestCreateRoom(String memberCount, String raceCount, String costLimit, String roomPay) {
                 String uriAPI = Conf.serviceAddress+ InterfaceUrl.createRoom+
-                        "?creatUserId=2969&memberLimit="+memberCount+"&playCount="+raceCount+"&roomPay="+roomPay+"&costLimit="+costLimit;
+                        "?creatUserId=3400&memberLimit="+memberCount+"&playCount="+raceCount+"&roomPay="+roomPay+"&costLimit="+costLimit;
                 HttpGet httpRequest = new HttpGet(uriAPI);
                 HttpClient httpClient = new DefaultHttpClient();
                 try {
