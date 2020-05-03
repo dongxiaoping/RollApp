@@ -103,7 +103,7 @@ public class WaitGameListActivity extends AppCompatActivity {
     public void doGetOnRoom() {
         OkHttpClient okhttpClient = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
-        String url = Conf.serviceAddress + InterfaceUrl.get_on_room_list_by_user_id + "?userId=3400";
+        String url = Conf.serviceAddress + InterfaceUrl.get_on_room_list_by_user_id + "?userId=3403";
         Request request = builder.get().url(url).build();
         Call call = okhttpClient.newCall(request);
         call.enqueue(new Callback() {
