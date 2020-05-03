@@ -33,6 +33,8 @@ import java.io.InputStreamReader;
 * */
 public class CreatRoomActivity extends AppCompatActivity implements View.OnClickListener {
     RadioGroup radioGroup;
+    private static int DAI_KAI_TYPE = 2; //代开模式
+    private static int AA_TYPE = 1; //AA模式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,11 +171,13 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             RadioButton rb = (RadioButton) RadioGroupRadioMemberCount.getChildAt(i);
             if (rb.isChecked()) {
                 if (i == 0) {
-                    val = 10;
+                    val = 12;
                 } else if (i == 1) {
+                    val = 16;
+                } else if(i==2){
                     val = 20;
-                } else {
-                    val = 25;
+                }else{
+                    val = 24;
                 }
                 break;
             }
@@ -189,9 +193,9 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             RadioButton rb = (RadioButton) RadioGroupRadioMemberCount.getChildAt(i);
             if (rb.isChecked()) {
                 if (i == 0) {
-                    val = 2;
+                    val = this.DAI_KAI_TYPE;
                 } else {
-                    val = 1;
+                    val = this.AA_TYPE;
                 }
                 break;
             }
@@ -207,11 +211,13 @@ public class CreatRoomActivity extends AppCompatActivity implements View.OnClick
             RadioButton rb = (RadioButton) RadioGroupRadioMemberCount.getChildAt(i);
             if (rb.isChecked()) {
                 if (i == 0) {
-                    val = 10;
-                } else if (i == 1) {
-                    val = 20;
-                } else {
                     val = 50;
+                } else if (i == 1) {
+                    val = 100;
+                } else if(i == 2){
+                    val = 200;
+                }else{
+                    val = 300;
                 }
                 break;
             }

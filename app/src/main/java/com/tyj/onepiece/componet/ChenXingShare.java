@@ -20,7 +20,7 @@ public class ChenXingShare {
         }else{
             roomPayString = "AA";
         }
-        mCxWebPageMessage._cx_content = "邀请您一起玩，"+roomPayString+"房间【" + roomNum+"】，抢庄，人数"+renShu+"，局数"+juShu+"，最高下注"+costLimit;
+        mCxWebPageMessage._cx_content = "邀请您一起玩，"+roomPayString+"房间【" + roomNum+"】，人数上限"+renShu+"，局数"+juShu+"，最高下注"+costLimit;
         mCxWebPageMessage._cx_page_Image = "https://www.toplaygame.cn/share_icon.png";
         mCxWebPageMessage._cx_page_Url = this.getPlayUrlByRoomNum(roomNum);
         mIcxOpenAPI.doReq(mCxWebPageMessage);

@@ -43,23 +43,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="6人" />
+                android:text="6" />
 
             <RadioButton
                 android:id="@+id/radioMemberCountTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="8人" />
+                android:text="8" />
 
             <RadioButton
                 android:id="@+id/radioMemberCountThree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="10人" />
+                android:text="10" />
         </RadioGroup>
 
 
@@ -95,23 +93,28 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="10局" />
+                android:text="12" />
 
             <RadioButton
                 android:id="@+id/radioRaceCountTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="20局" />
+                android:text="16" />
 
             <RadioButton
                 android:id="@+id/radioRaceCountThree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="25局" />
+                android:text="20" />
+
+            <RadioButton
+                android:id="@+id/radioRaceCountFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="24" />
         </RadioGroup>
 
         <TextView
@@ -146,23 +149,28 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="10" />
+                android:text="50" />
 
             <RadioButton
                 android:id="@+id/radioPayLimitTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="20" />
+                android:text="100" />
 
             <RadioButton
                 android:id="@+id/radioPayLimitThree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:text="50" />
+                android:text="200" />
+
+            <RadioButton
+                android:id="@+id/radioPayLimitFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="300" />
         </RadioGroup>
 
         <TextView
@@ -203,7 +211,6 @@
                 android:id="@+id/radioCostDaimondTypeTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:text="AA付费" />
         </RadioGroup>
