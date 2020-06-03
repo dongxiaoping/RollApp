@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tyj.onepiece.componet.ChenXingShare;
+import com.tyj.onepiece.componet.WechatShare;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +30,7 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
     String showContent;
     int roomPay; //2 代开房  1 AA房
     private ChenXingShare chenXingShare;
-    private IWXAPI wxapi;
+    private WechatShare wechatShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,37 +55,35 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
 
         chenXingShare = new ChenXingShare();
         chenXingShare.initChenXingShare(RoomSuccessActivity.this);
-        this.showContent= this.getShareContent(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
+        this.showContent = this.getShareContent(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
         EditText editTextShow = (EditText) findViewById(R.id.edit_share_edit_id);
         editTextShow.setGravity(Gravity.LEFT);
         editTextShow.setText(this.showContent);
-
-
-        this.regToWeiXin();
+        wechatShare = new WechatShare(this);
     }
 
-    public  String getShareContent(String roomNum,String renShu, String juShu, String costLimit,int roomPay){
+    public String getShareContent(String roomNum, String renShu, String juShu, String costLimit, int roomPay) {
         String roomPayString = "";
-        if(roomPay == 2){
+        if (roomPay == 2) {
             roomPayString = "代开";
-        }else{
+        } else {
             roomPayString = "AA";
         }
-        String item = " 邀请您一起玩，"+roomPayString+"房间【" + roomNum+"】，人数上限"+renShu+
-                "，局数"+juShu+"，最高下"+costLimit+",点击URL地址进入："+ this.getPlayUrlByRoomNum(roomNum);
+        String item = " 邀请您一起玩，" + roomPayString + "房间【" + roomNum + "】，人数上限" + renShu +
+                "，局数" + juShu + "，最高下" + costLimit + ",点击URL地址进入：" + this.getPlayUrlByRoomNum(roomNum);
         return item;
     }
 
     private String getPlayUrlByRoomNum(String num) {
-        String adddr =   MeterApplication.getInstance().getAgencyConfig().getGameUrl();
-        return adddr+"?roomId=" + num;
+        String adddr = MeterApplication.getInstance().getAgencyConfig().getGameUrl();
+        return adddr + "?roomId=" + num;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) { //返回按钮
             case android.R.id.home:
-                Intent intent= new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
@@ -94,46 +91,12 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    public void regToWeiXin() {
-        wxapi = WXAPIFactory.createWXAPI(this, "wx8f0020a1e2c7355c", true);
-        wxapi.registerApp("wx8f0020a1e2c7355c");
-    }
-
-    /**
-     * 分享文本类型
-     *
-     * @param text 文本内容
-     * @param type 微信会话或者朋友圈等
-     */
-    public void shareTextToWx(String text, int type) {
-        if (text == null || text.length() == 0) {
-            return;
-        }
-
-        WXTextObject textObj = new WXTextObject();
-        textObj.text = text;
-
-        WXMediaMessage msg = new WXMediaMessage();
-        msg.mediaObject = textObj;
-        msg.description = text;
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("text");
-        req.message = msg;
-        req.scene = type;
-        wxapi.sendReq(req);
-    }
-
-    private String buildTransaction(final String type) {
-        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.content_share_button:
                 //chenXingShare.actionShareButtonClick(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
-                this.shareTextToWx("aaa",SendMessageToWX.Req.WXSceneSession);
+                wechatShare.shareTextToWx("aaa", SendMessageToWX.Req.WXSceneSession);
                 break;
             case R.id.edit_share_edit_copy_id:
                 ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
