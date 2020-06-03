@@ -4,6 +4,12 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tyj.onepiece.componet.ChenXingShare;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +31,7 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
     String showContent;
     int roomPay; //2 代开房  1 AA房
     private ChenXingShare chenXingShare;
+    private IWXAPI wxapi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,9 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
         EditText editTextShow = (EditText) findViewById(R.id.edit_share_edit_id);
         editTextShow.setGravity(Gravity.LEFT);
         editTextShow.setText(this.showContent);
+
+
+        this.regToWeiXin();
     }
 
     public  String getShareContent(String roomNum,String renShu, String juShu, String costLimit,int roomPay){
@@ -84,11 +94,46 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
+    public void regToWeiXin() {
+        wxapi = WXAPIFactory.createWXAPI(this, "wx8f0020a1e2c7355c", true);
+        wxapi.registerApp("wx8f0020a1e2c7355c");
+    }
+
+    /**
+     * 分享文本类型
+     *
+     * @param text 文本内容
+     * @param type 微信会话或者朋友圈等
+     */
+    public void shareTextToWx(String text, int type) {
+        if (text == null || text.length() == 0) {
+            return;
+        }
+
+        WXTextObject textObj = new WXTextObject();
+        textObj.text = text;
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObj;
+        msg.description = text;
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("text");
+        req.message = msg;
+        req.scene = type;
+        wxapi.sendReq(req);
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.content_share_button:
-                chenXingShare.actionShareButtonClick(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
+                //chenXingShare.actionShareButtonClick(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
+                this.shareTextToWx("aaa",SendMessageToWX.Req.WXSceneSession);
                 break;
             case R.id.edit_share_edit_copy_id:
                 ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
