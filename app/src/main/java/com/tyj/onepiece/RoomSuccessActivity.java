@@ -61,6 +61,17 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
         editTextShow.setText(this.showContent);
         wechatShare = new WechatShare(this);
     }
+    public String getWeChatDes(String roomNum, String renShu, String juShu, String costLimit, int roomPay) {
+        String roomPayString = "";
+        if (roomPay == 2) {
+            roomPayString = "代开";
+        } else {
+            roomPayString = "AA";
+        }
+        String item = " 邀请您一起玩，" + roomPayString + "房间【" + roomNum + "】，人数上限" + renShu +
+                "，局数" + juShu + "，最高下" + costLimit;
+        return item;
+    }
 
     public String getShareContent(String roomNum, String renShu, String juShu, String costLimit, int roomPay) {
         String roomPayString = "";
@@ -96,7 +107,9 @@ public class RoomSuccessActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.content_share_button:
                 //chenXingShare.actionShareButtonClick(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
-                wechatShare.shareTextToWx("aaa", SendMessageToWX.Req.WXSceneSession);
+               // wechatShare.shareTextToWx("aaa", SendMessageToWX.Req.WXSceneSession);
+                String des = this.getShareContent(this.roomId, this.memberLimit, this.playCount, this.costLimit, this.roomPay);
+                wechatShare.shareWebToWx(SendMessageToWX.Req.WXSceneSession, this, this.getPlayUrlByRoomNum(roomId),"滚筒子",des);
                 break;
             case R.id.edit_share_edit_copy_id:
                 ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
